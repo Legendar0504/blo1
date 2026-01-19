@@ -205,6 +205,7 @@
             opacity: 0.9;
         }
 
+        /* Обновленные стили модального окна */
         .modal {
             display: none;
             position: fixed;
@@ -216,6 +217,7 @@
             background-color: rgba(0, 0, 0, 0.95);
             overflow: auto;
             animation: fadeIn 0.3s;
+            touch-action: none;
         }
         .modal-content {
             display: flex;
@@ -223,13 +225,63 @@
             align-items: center;
             height: 100%;
             width: 100%;
+            position: relative;
         }
         .modal-image {
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
             animation: zoomIn 0.3s;
+            transition: transform 0.3s ease;
+            user-select: none;
+            -webkit-user-select: none;
         }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+        
+        /* Стрелки навигации */
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-nav:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(1.1);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .modal-nav i {
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .modal-prev {
+            left: 20px;
+        }
+        
+        .modal-next {
+            right: 20px;
+        }
+        
         .close {
             position: absolute;
             top: 1.5rem;
@@ -239,14 +291,165 @@
             font-weight: bold;
             transition: color 0.3s, transform 0.3s;
             cursor: pointer;
+            z-index: 1001;
+            background-color: rgba(0, 0, 0, 0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
         .close:hover {
             color: #d1d5db;
             transform: scale(1.1);
+            background-color: rgba(0, 0, 0, 0.5);
         }
-        @keyframes zoomIn {
-            from { transform: scale(0.8); }
-            to { transform: scale(1); }
+        
+        /* Контролы внизу модального окна */
+        .modal-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            z-index: 1001;
+        }
+        
+        .modal-counter {
+            color: white;
+            font-size: 1.2rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .modal-dots {
+            display: flex;
+            gap: 10px;
+            margin: 0 20px;
+        }
+        
+        .modal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+        
+        /* Индикатор свайпа (для мобильных) */
+        .swipe-indicator {
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            z-index: 1001;
+            opacity: 0.7;
+            animation: fadeInOut 3s infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Анимации перехода */
+        @keyframes slideFromRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideFromLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .slide-right {
+            animation: slideFromRight 0.3s ease-out;
+        }
+        
+        .slide-left {
+            animation: slideFromLeft 0.3s ease-out;
+        }
+        
+        /* Адаптивность для мобильных */
+        @media (max-width: 768px) {
+            .modal-nav {
+                width: 50px;
+                height: 50px;
+                background-color: rgba(255, 255, 255, 0.15);
+            }
+            
+            .modal-nav i {
+                font-size: 20px;
+            }
+            
+            .modal-prev {
+                left: 10px;
+            }
+            
+            .modal-next {
+                right: 10px;
+            }
+            
+            .close {
+                top: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+                font-size: 2rem;
+            }
+            
+            .modal-counter {
+                font-size: 1rem;
+                padding: 6px 12px;
+            }
+            
+            .swipe-indicator {
+                bottom: 60px;
+                font-size: 0.8rem;
+            }
+            
+            .modal-dots {
+                gap: 8px;
+            }
+            
+            .modal-dot {
+                width: 10px;
+                height: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-nav {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .modal-nav i {
+                font-size: 18px;
+            }
+            
+            .swipe-indicator {
+                bottom: 50px;
+            }
         }
     </style>
 </head>
@@ -334,53 +537,53 @@
                 </div>
                 
                 <div class="gallery-grid">
-                    <div class="gallery-item" onclick="openModal('img/exit.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/exit.jpg', this)">
                         <img src="img/exit.jpg" alt="Наш центр" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Наш центр</div>
                             <div class="gallery-description">Комфортные условия для вашего оздоровления</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/IMG_4536.JPG')">
-                        <img src="img/IMG_4536.JPG" alt="SPA-зона" class="gallery-image">
+                    <div class="gallery-item" onclick="openModal('img/IMG_4536.JPG', this)">
+                        <img src="img/IMG_4536.JPG" alt="Face" class="gallery-image">
                         <div class="gallery-overlay">
-                            <div class="gallery-title">SPA-зона</div>
+                            <div class="gallery-title">Кабинет Face массажа</div>
                             <div class="gallery-description">Релакс и восстановление</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/IMG_4538.JPG')">
-                        <img src="img/IMG_4538.JPG" alt="Массаж" class="gallery-image">
+                    <div class="gallery-item" onclick="openModal('img/IMG_4538.JPG', this)">
+                        <img src="img/IMG_4538.JPG" alt="Face" class="gallery-image">
                         <div class="gallery-overlay">
-                            <div class="gallery-title">Массажные кабинеты</div>
-                            <div class="gallery-description">Профессиональные массажисты</div>
+                            <div class="gallery-title">Кабинет Face массажа</div>
+                            <div class="gallery-description">Релакс и восстановление</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/IMG_4508.JPG')">
-                        <img src="img/IMG_4508.JPG" alt="Бассейн" class="gallery-image">
+                    <div class="gallery-item" onclick="openModal('img/IMG_4508.JPG', this)">
+                        <img src="img/IMG_4508.JPG" alt="специалист по массажу и подвесной системе" class="gallery-image">
                         <div class="gallery-overlay">
-                            <div class="gallery-title">Бассейн</div>
-                            <div class="gallery-description">Водные процедуры для здоровья</div>
+                            <div class="gallery-title">Специалист по массажу и подвесной системе</div>
+                            <div class="gallery-description">Релакс и восстановление</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/IMG_4518.JPG')">
-                        <img src="img/IMG_4518.JPG" alt="Тренажерный зал" class="gallery-image">
+                    <div class="gallery-item" onclick="openModal('img/IMG_4518.JPG', this)">
+                        <img src="img/IMG_4518.JPG" alt="Специалист по массажу и подвесной системе" class="gallery-image">
                         <div class="gallery-overlay">
-                            <div class="gallery-title">Тренажерный зал</div>
-                            <div class="gallery-description">Современное оборудование</div>
+                            <div class="gallery-title">Специалист по массажу и подвесной системе</div>
+                            <div class="gallery-description">Релакс и восстановление</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/IMG_20251214_135208_098.jpg')">
-                        <img src="img/IMG_20251214_135208_098.jpg" alt="Йога" class="gallery-image">
+                    <div class="gallery-item" onclick="openModal('img/IMG_20251214_135208_098.jpg', this)">
+                        <img src="img/IMG_20251214_135208_098.jpg" alt="специалист по остеопатии и мануальной терапии" class="gallery-image">
                         <div class="gallery-overlay">
-                            <div class="gallery-title">Зал для йоги</div>
-                            <div class="gallery-description">Гармония тела и духа</div>
+                            <div class="gallery-title">специалист по остеопатии и мануальной терапии</div>
+                            <div class="gallery-description">Релакс и восстановление</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/IMG_4524.JPG')">
-                        <img src="img/IMG_4524.JPG" alt="Йога" class="gallery-image">
+                    <div class="gallery-item" onclick="openModal('img/IMG_4524.JPG', this)">
+                        <img src="img/IMG_4524.JPG" alt="специалист по остеопатии и мануальной терапии" class="gallery-image">
                         <div class="gallery-overlay">
-                            <div class="gallery-title">Зал для йоги</div>
-                            <div class="gallery-description">Гармония тела и духа</div>
+                            <div class="gallery-title">специалист по остеопатии и мануальной терапии</div>
+                            <div class="gallery-description">Релакс и восстановление</div>
                         </div>
                     </div>
                 </div>
@@ -395,28 +598,28 @@
                 </div>
                 
                 <div class="gallery-grid">
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_16.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_16.jpg', this)">
                         <img src="img/sert/sert_16.jpg" alt="Сертификат 11" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">ИКПК</div>
                             <div class="gallery-description">«Основы мышечного тестирования. Структуральная, эмоциональная и биохимическая составляющие триады здоровья»</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_14.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_14.jpg', this)">
                         <img src="img/sert/sert_14.jpg" alt="Сертификат 17" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">ИКПК</div>
                             <div class="gallery-description">«Миофасциальный и буккальный массаж лица»</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_13.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_13.jpg', this)">
                         <img src="img/sert/sert_13.jpg" alt="Сертификат 16" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">ИКПК</div>
                             <div class="gallery-description">«Соматические дисфункции лимфатической системы и методы их коррекции в реабилитологии и спортивной медицине»</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_12.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_12.jpg', this)">
                         <img src="img/sert/sert_12.jpg" alt="Сертификат 15" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">ИКПК</div>
@@ -424,97 +627,97 @@
                         </div>
                     </div>
                     
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_10.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_10.jpg', this)">
                         <img src="img/sert/sert_10.jpg" alt="Сертификат 9" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">ЦПРМ</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_4.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_4.jpg', this)">
                         <img src="img/sert/sert_4.jpg" alt="Сертификат 10" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">ЦПРМ</div>
                         </div>
                     </div>
                     
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_2.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_2.jpg', this)">
                         <img src="img/sert/sert_2.jpg" alt="Сертификат 1" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Классический массаж</div>
                             <div class="gallery-description">Сертификат специалиста</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_9.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_9.jpg', this)">
                         <img src="img/sert/sert_9.jpg" alt="Сертификат 2" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Висцеральный массаж живота</div>
                             <div class="gallery-description">Сертификат международного стандарта</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_11.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_11.jpg', this)">
                         <img src="img/sert/sert_11.jpg" alt="Сертификат 3" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Массаж в детско юнешеском спорте</div>
                             <div class="gallery-description">Диплом о медицинском образовании</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_15.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_15.jpg', this)">
                         <img src="img/sert/sert_15.jpg" alt="Сертификат 4" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Логопедический массаж</div>
                             <div class="gallery-description">Сертификат аккредитации</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_20.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_20.jpg', this)">
                         <img src="img/sert/sert_20.jpg" alt="Сертификат 5" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Классический детский массаж</div>
                             <div class="gallery-description">Диплом о высшем образовании</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_21.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_21.jpg', this)">
                         <img src="img/sert/sert_21.jpg" alt="Сертификат 6" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Функциональная анатомия</div>
                             <div class="gallery-description">Диплом о профессиональной переподготовке</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_22.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_22.jpg', this)">
                         <img src="img/sert/sert_22.jpg" alt="Сертификат 7" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Введение в рентгенологию для массажистов</div>
                             <div class="gallery-description">Диплом о профессиональной подготовке</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_23.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_23.jpg', this)">
                         <img src="img/sert/sert_23.jpg" alt="Сертификат 8" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">Детский массаж</div>
                             <div class="gallery-description">Сертификат качества услуг</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_8.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_8.jpg', this)">
                         <img src="img/sert/sert_8.jpg" alt="Сертификат 18" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">АКАДЕМИЯ МЕДИЦИНСКОЙ кинаиологии И МАНУАЛЬНОЙ ТЕРАПИИ</div>
                             <div class="gallery-description">Сертификат эксперта</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_18.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_18.jpg', this)">
                         <img src="img/sert/sert_18.jpg" alt="Сертификат 20" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">АКАДЕМИЯ МЕДИЦИНСКОЙ кинаиологии И МАНУАЛЬНОЙ ТЕРАПИИ</div>
                             <div class="gallery-description">Сертификат тренера</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_19.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_19.jpg', this)">
                         <img src="img/sert/sert_19.jpg" alt="Сертификат 21" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">АКАДЕМИЯ МЕДИЦИНСКОЙ кинаиологии И МАНУАЛЬНОЙ ТЕРАПИИ</div>
                             <div class="gallery-description">Удостоверение инструктора</div>
                         </div>
                     </div>
-                    <div class="gallery-item" onclick="openModal('img/sert/sert_1.jpg')">
+                    <div class="gallery-item" onclick="openModal('img/sert/sert_1.jpg', this)">
                         <img src="img/sert/sert_1.jpg" alt="Сертификат 22" class="gallery-image">
                         <div class="gallery-overlay">
                             <div class="gallery-title">G DERM</div>
@@ -525,11 +728,29 @@
             </div>
         </div>
 
-        <!-- Modal for Fullscreen Image -->
+        <!-- Обновленное модальное окно с навигацией -->
         <div id="imageModal" class="modal">
             <span class="close" onclick="closeModal()">&times;</span>
+            
+            <button class="modal-nav modal-prev" onclick="changeImage(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <button class="modal-nav modal-next" onclick="changeImage(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
             <div class="modal-content">
                 <img id="expandedImage" class="modal-image">
+            </div>
+            
+            <div class="swipe-indicator" id="swipeIndicator">
+                <i class="fas fa-arrows-left-right mr-2"></i>Свайпните для переключения
+            </div>
+            
+            <div class="modal-controls">
+                <div class="modal-counter" id="modalCounter">1 / 1</div>
+                <div class="modal-dots" id="modalDots"></div>
             </div>
         </div>
     </main>
@@ -603,6 +824,13 @@
     </footer>
 
     <script>
+        // Глобальные переменные для управления галереей
+        let currentGalleryImages = [];
+        let currentImageIndex = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let isModalOpen = false;
+
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -638,7 +866,7 @@
                 });
             });
 
-            // Функция для переключения вкладок (доступна глобально)
+            // Функция для переключения вкладок
             window.switchToTab = function(tabId) {
                 // Remove active class from all tabs and contents
                 tabs.forEach(t => t.classList.remove('active'));
@@ -654,37 +882,226 @@
 
             // Проверяем хеш при загрузке страницы
             if (window.location.hash) {
-                const hash = window.location.hash.substring(1); // Убираем #
+                const hash = window.location.hash.substring(1);
                 if (hash === 'tab1' || hash === 'tab2') {
-                    // Небольшая задержка для полной загрузки страницы
                     setTimeout(() => {
                         switchToTab(hash);
                     }, 100);
                 }
             }
 
-            // Modal functionality
-            window.openModal = function(imageSrc) {
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('expandedImage');
-                modal.style.display = 'flex';
-                modalImg.src = imageSrc;
-                modal.onclick = function(e) {
-                    if (e.target === modal) {
-                        closeModal();
+            // Добавляем обработчики свайпов для всех изображений галереи
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                
+                item.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    const diff = touchStartX - touchEndX;
+                    const swipeThreshold = 50;
+                    
+                    if (Math.abs(diff) > swipeThreshold) {
+                        const img = this.querySelector('img');
+                        if (img) {
+                            openModal(img.src, this);
+                        }
                     }
-                };
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        closeModal();
-                    }
-                });
-            };
-
-            window.closeModal = function() {
-                document.getElementById('imageModal').style.display = 'none';
-            };
+                }, { passive: true });
+            });
         });
+
+        // Получаем все изображения текущей активной вкладки
+        function getCurrentTabImages() {
+            const activeTab = document.querySelector('.tab-content.active');
+            if (!activeTab) return [];
+            
+            const galleryItems = activeTab.querySelectorAll('.gallery-item');
+            const images = [];
+            
+            galleryItems.forEach(item => {
+                const img = item.querySelector('img');
+                if (img && img.src) {
+                    images.push({
+                        src: img.src,
+                        alt: img.alt || '',
+                        title: item.querySelector('.gallery-title')?.textContent || '',
+                        description: item.querySelector('.gallery-description')?.textContent || ''
+                    });
+                }
+            });
+            
+            return images;
+        }
+
+        // Открытие модального окна с галереей
+        window.openModal = function(imageSrc, element) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('expandedImage');
+            
+            // Получаем все изображения текущей вкладки
+            currentGalleryImages = getCurrentTabImages();
+            
+            // Находим индекс текущего изображения
+            currentImageIndex = currentGalleryImages.findIndex(img => img.src === imageSrc);
+            if (currentImageIndex === -1) currentImageIndex = 0;
+            
+            // Показываем модальное окно
+            modal.style.display = 'flex';
+            modalImg.src = imageSrc;
+            isModalOpen = true;
+            
+            // Обновляем управление
+            updateModalControls();
+            
+            // Добавляем обработчики свайпов
+            modal.addEventListener('touchstart', handleTouchStart, { passive: true });
+            modal.addEventListener('touchend', handleTouchEnd, { passive: true });
+            
+            // Добавляем обработчики клавиатуры
+            document.addEventListener('keydown', handleKeyDown);
+            
+            // Скрываем индикатор свайпа через 5 секунд
+            setTimeout(() => {
+                const indicator = document.getElementById('swipeIndicator');
+                if (indicator) indicator.style.opacity = '0';
+            }, 5000);
+            
+            // Добавляем обработчик клика на фон для закрытия
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            };
+        };
+
+        // Обработка начала свайпа
+        function handleTouchStart(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        }
+
+        // Обработка окончания свайпа
+        function handleTouchEnd(event) {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipe();
+        }
+
+        // Обработка свайпа
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Свайп влево - следующее изображение
+                    changeImage(1);
+                } else {
+                    // Свайп вправо - предыдущее изображение
+                    changeImage(-1);
+                }
+            }
+        }
+
+        // Обработка клавиатуры
+        function handleKeyDown(event) {
+            if (!isModalOpen) return;
+            
+            switch(event.key) {
+                case 'ArrowLeft':
+                    changeImage(-1);
+                    break;
+                case 'ArrowRight':
+                    changeImage(1);
+                    break;
+                case 'Escape':
+                    closeModal();
+                    break;
+            }
+        }
+
+        // Изменение текущего изображения
+        window.changeImage = function(direction) {
+            if (currentGalleryImages.length === 0) return;
+            
+            // Вычисляем новый индекс
+            currentImageIndex += direction;
+            
+            // Проверяем границы
+            if (currentImageIndex < 0) {
+                currentImageIndex = currentGalleryImages.length - 1;
+            } else if (currentImageIndex >= currentGalleryImages.length) {
+                currentImageIndex = 0;
+            }
+            
+            // Получаем новое изображение
+            const newImage = currentGalleryImages[currentImageIndex];
+            const modalImg = document.getElementById('expandedImage');
+            
+            // Добавляем анимацию
+            modalImg.classList.remove('slide-left', 'slide-right');
+            void modalImg.offsetWidth; // Trigger reflow
+            
+            if (direction > 0) {
+                modalImg.classList.add('slide-right');
+            } else {
+                modalImg.classList.add('slide-left');
+            }
+            
+            // Обновляем изображение
+            modalImg.src = newImage.src;
+            
+            // Обновляем управление
+            updateModalControls();
+        };
+
+        // Обновление элементов управления галереей
+        function updateModalControls() {
+            const counter = document.getElementById('modalCounter');
+            const dotsContainer = document.getElementById('modalDots');
+            
+            if (counter && dotsContainer && currentGalleryImages.length > 0) {
+                // Обновляем счетчик
+                counter.textContent = `${currentImageIndex + 1} / ${currentGalleryImages.length}`;
+                
+                // Обновляем точки
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < currentGalleryImages.length; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'modal-dot';
+                    if (i === currentImageIndex) {
+                        dot.classList.add('active');
+                    }
+                    dot.addEventListener('click', () => {
+                        currentImageIndex = i;
+                        const modalImg = document.getElementById('expandedImage');
+                        modalImg.src = currentGalleryImages[i].src;
+                        
+                        // Добавляем анимацию при переключении по точкам
+                        modalImg.classList.remove('slide-left', 'slide-right');
+                        void modalImg.offsetWidth;
+                        
+                        updateModalControls();
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+        }
+
+        // Закрытие модального окна
+        window.closeModal = function() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            isModalOpen = false;
+            
+            // Удаляем обработчики
+            modal.removeEventListener('touchstart', handleTouchStart);
+            modal.removeEventListener('touchend', handleTouchEnd);
+            document.removeEventListener('keydown', handleKeyDown);
+            
+            // Показываем индикатор свайпа снова при следующем открытии
+            const indicator = document.getElementById('swipeIndicator');
+            if (indicator) indicator.style.opacity = '0.7';
+        };
     </script>
 </body>
 </html>
